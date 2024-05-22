@@ -1,6 +1,6 @@
 <?php
 
-class CleanStoredTextAreaValues {
+class CleanStoredTextareaValues {
   private $values;
 
   public function __construct($values) {
