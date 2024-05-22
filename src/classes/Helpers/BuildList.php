@@ -22,7 +22,7 @@ class BuildList {
     sort($array);
     $list = '';
     foreach ($array as $item) {
-      $list .= esc_html($item) . '&#13;&#10;';
+      $list .= $item . '&#13;&#10;';
     }
     return $list;
   }
@@ -32,7 +32,7 @@ class BuildList {
     sort($array);
     $list = '';
     foreach ($array as $item) {
-      $list .= esc_html($item) . '&#13;&#10;';
+      $list .= $item . '&#13;&#10;';
     }
     return $list;
   }

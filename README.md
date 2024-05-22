@@ -1,6 +1,6 @@
 # CF7 Email Filter
 
-Simple overview of use/purpose.
+Email validation extension for Contact Form 7 that allows you to exclude email services submitted through a form.
 
 ## Description
 
@@ -15,25 +15,28 @@ An in-depth paragraph about your project and overview of use.
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+1. Download the plugin.
+2. Upload the cf7-email-filter folder to your site's wp-content/plugins directory.
+3. Activate the plugin in the WordPress Admin Panel.
+4. In the Admin Panel, go to Settings->CF7 Email Filter
+5. Select the forms you want to have the validation filter active
 
-### Executing program
-
-* How to run the program
-* Step-by-step bullets
+### Running PHPUnit Tests
 
 ```shell
-code blocks for commands
+# run tests
+./php_tests.sh basic
+
+# run testdox
+./php_tests.sh testdox
+
+# run a specific test
+./php_tests.sh file FileNameTest
 ```
 
 ## Help
 
 Any advise for common problems or issues.
-
-```shell
-command to run if program contains helper info
-```
 
 ## Version History
 
