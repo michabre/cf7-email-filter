@@ -186,12 +186,12 @@ function free_email_validation_filter( $result, $tag ) {
     return $result;
   }
 
-  if ( $tag->type == 'email*') {
+  if ( $tag->type == 'email*' ) {
     $your_email = isset( $_POST[$tag->name] ) ? trim( $_POST[$tag->name] ) : '';
     foreach ($freeDomainEmails as $free) {
       $domain = substr($your_email, strpos($your_email, '@') + 1);
       if ( $domain == $free ) {
-        $result->invalidate( $tag, $warning_message . ' | type ' . $tag->type );
+        $result->invalidate( $tag, $warning_message);
       }
     }
   }
