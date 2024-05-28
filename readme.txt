@@ -1,6 +1,6 @@
 === CF7 Email Filter ===
 Contributors: michabre
-Donate link: http://ylefebvre.ca/wordpress-plugins/bookreviews
+Donate link: 
 Tags: forms, contact form 7
 Requires at least: 5.0
 Tested up to: 6.0
@@ -12,20 +12,15 @@ Email field validator for Contact Form 7
 
 == Description ==
 
-This plugin lets you add a book review system to your
-WordPress site. Using custom post types, administrators
-will be able to create and edit book reviews to be
-published on your site.
+Email validation extension for Contact Form 7 that allows you to exclude email services submitted through a form.
 
 == Installation ==
 
 1. Download the plugin.
-1. Upload the book-reviews folder to your site's
-wp-content/plugins directory.
-1. Activate the plugin in the WordPress Admin Panel.
-1. Start creating new book reviews!
-1. Use the [book-review-list] shortcode to list reviews
-on a page.
+2. Upload the cf7-email-filter folder to your site's wp-content/plugins directory.
+3. Activate the plugin in the WordPress Admin Panel.
+4. In the Admin Panel, go to Contact->Email Filter or Settings->CF7 Email Filter.
+5. Verify/update the List of Blocked Emails, add a custom Warning Message, and choose which Contact Form 7 Forms you want the validation activated.
 
 == Changelog ==
 

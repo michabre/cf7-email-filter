@@ -1,0 +1,19 @@
+{
+  "name": "cf7-email-filter",
+  "version": "1.0.0",
+  "description": "Email validation extension for Contact Form 7 that allows you to exclude email services submitted through a form.",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "cypress": "npx cypress open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^13.10.0"
+  }
+}
