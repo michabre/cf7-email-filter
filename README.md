@@ -1,20 +1,24 @@
-# CF7 Email Filter
+# CF7 Email Domain Filter
 
-Email validation extension for Contact Form 7 that allows you to exclude email services submitted through a form.
+An add-on plugin for Contact Form 7 which allows you to exclude email domains submitted through a form.
 
 ## Description
 
-TODO
+The purpose of this Contact Form 7 add-on plugin is to minimize form submissions from questionable email addresses. Spammers and spambots often use free email services when completing forms. If they can surpass security measures like honey pot or CAPTCHA, they can successfully complete a form submission. This will fill your mailbox with junk and useless messages with the intent of wasting your time or getting you to click something potentially malicious.
+
+This WordPress plugin allows you to define a list of blocked email domains, select which forms you want validated and display a warning message for the User to input a different email address.
 
 ## Getting Started
 
 ### Installing
 
-1. Download the plugin.
-2. Upload the cf7-email-filter folder to your site's wp-content/plugins directory.
-3. Activate the plugin in the WordPress Admin Panel.
-4. In the Admin Panel, go to Contact->Email Filter or Settings->CF7 Email Filter.
-5. Verify/update the **List of Blocked Emails**, add a custom **Warning Message**, and choose which Contact Form 7 Forms you want the validation activated.
+1. Download the plugin
+2. Upload the cf7-email-filter folder to your site's wp-content/plugins directory
+3. Activate the plugin in the WordPress Admin Panel
+4. In the Admin Panel, go to Contact->Email Filter or Settings->CF7 Email Filter
+5. Verify/update the **List of Blocked Emails**, add a custom **Warning Message**, and choose which Contact Form 7 Forms you want the validation activated
+
+## For Developers
 
 ### Running PHPUnit Tests
 
@@ -27,6 +31,12 @@ TODO
 
 # run a specific test
 ./php_tests.sh file BuildListTest
+```
+
+### Running E2E Tests with Cypress
+
+```shell
+npm run cypress
 ```
 
 ## Version History
