@@ -26,6 +26,15 @@ if (is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
   add_action('admin_notices', 'cf7_active_notice');
 }
 
+//
+add_action( 'admin_enqueue_scripts', 'cf7_email_filter_admin_styles' );
+function cf7_email_filter_admin_styles() {
+  $screen = get_current_screen();
+  if ( 'settings_page_cf7-email-filter' == $screen->base ) {
+    wp_enqueue_style( 'cf7-email-filter-dashboard', plugins_url( 'assets/css/dashboard.css',__FILE__ ), array(), '0.0.1' );
+  }
+}
+
 function cf7_active_notice(){
   global $pagenow;
   if ( $pagenow == 'plugins.php' ) {
@@ -93,28 +102,42 @@ function cf7_email_filter_config_page() {
     <form name="cf7_email_filter_options_form" method="post" action="admin-post.php">
       <input type="hidden" name="action" value="save_cf7_email_filter_options" />
       <?php wp_nonce_field( 'cf7_email_filter' ); ?>
-      List of Blocked Emails<br />
-      <textarea name="list_of_emails" id="fancy-textarea" rows="10" cols="40" style="font-family:Consolas,Monaco,monospace"><?php echo $list; ?></textarea><br />
 
-      <label for="warning-message">Warning Message</label><br />
-      <input type="text" name="warning_message" value="<?php echo $options['warning_message']; ?>" size="50" /><br /><br />
+      <table class="form-table" role="presentation">
+        <tbody>
+          <tr>
+            <th scope="row"><label>List of Blocked Emails</label></th>
+            <td><textarea name="list_of_emails" id="fancy-textarea" rows="10" cols="50" style="font-family:Consolas,Monaco,monospace" class="regular-text"><?php echo $list; ?></textarea></td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="warning-message">Warning Message</label></th>
+            <td><input type="text" name="warning_message" value="<?php echo $options['warning_message']; ?>" class="regular-text" /></td>
+          </tr>
+          <tr>
+            <th scope="row"><label for="available-forms">Available Forms</label></th>
+            <td>
+            <?php
+              $selected_forms = explode(',', $options['cf7_forms']);
+              $posts = get_posts(array(
+                'post_type'     => 'wpcf7_contact_form',
+                'numberposts'   => -1
+              ));
+              foreach ( $posts as $p ) {
+                $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
+                echo '<input type="checkbox" name="cf7_forms[]" value="'.$p->ID.'" ' . $checked . '>';
+                echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label><br>';
+              } 
+            ?>
+            </td>
+          </tr>
 
-      <label for="available-forms">Available Forms</label><br />
-        <?php
-          $selected_forms = explode(',', $options['cf7_forms']);
-          $posts = get_posts(array(
-            'post_type'     => 'wpcf7_contact_form',
-            'numberposts'   => -1
-          ));
-          foreach ( $posts as $p ) {
-            $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
-            echo '<input type="checkbox" name="cf7_forms[]" value="'.$p->ID.'" ' . $checked . '>';
-            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label><br>';
-          } 
-        ?>
-
+        </tbody>
+      </table>
+   
+    <p class="submit">
       <input type="submit" value="Submit" class="button-primary" />
       <input type="submit" value="Reset" name="resetstyle" class="button-primary" />
+    </p>
     </form>
   </div>
 <?php }
