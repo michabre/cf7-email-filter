@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: CF7 Email Filter
-Plugin URI:
-Description: Contact Form 7 validator that allows you to block emails from specific domains
-Version: 0.1
+Plugin URI: https://github.com/michabre/cf7-email-filter
+Description: Contact Form 7 validator that allows you to block emails from specific domains.
+Version: 0.2
 Author: michabre
-Author URI: https://michabre.com
+Author URI: https://github.com/michabre
 License: GPLv2
 */
 
