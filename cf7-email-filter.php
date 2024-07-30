@@ -4,7 +4,7 @@
 Plugin Name: CF7 Email Filter
 Plugin URI: https://github.com/michabre/cf7-email-filter
 Description: Contact Form 7 validator that allows you to block emails from specific domains.
-Version: 0.2
+Version: 1.0
 Author: michabre
 Author URI: https://github.com/michabre
 License: GPLv2
@@ -61,7 +61,7 @@ function wpcf7_admin_menu_extras() {
 function cf7_email_filter_get_options() {
   $options = get_option( 'cf7_email_filter_options', array() );
   $default_list_of_emails = plugin_dir_path( __FILE__ ) . 'default_emails.txt';
-  $new_options['list_of_emails'] = file_get_contents( $default_list_of_emails );
+  $new_options['list_of_emails'] =  wp_remote_get( $default_list_of_emails );
   $new_options['warning_message'] = 'Please input a valid business email address.';
   $new_options['cf7_forms'] = '';
   $merged_options = wp_parse_args( $options, $new_options );
