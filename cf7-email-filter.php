@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: CF7 Email Filter
-Plugin URI:
-Description: Contact Form 7 validator that allows you to block emails from specific domains
-Version: 0.1
+Plugin URI: https://github.com/michabre/cf7-email-filter
+Description: Contact Form 7 validator that allows you to block emails from specific domains.
+Version: 1.0
 Author: michabre
-Author URI: https://michabre.com
+Author URI: https://github.com/michabre
 License: GPLv2
 */
 
@@ -29,7 +29,7 @@ if (is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
 function cf7_active_notice(){
   global $pagenow;
   if ( $pagenow == 'plugins.php' ) {
-    echo '<div class="notice notice-warning is-dismissible"><p>CF7 Email Filter requires Contact Form 7 to be active</p></div>';
+    echo '<div class="notice notice-warning is-dismissible"><p>CF7 Email Filter requires Contact Form 7 to be active.</p></div>';
   }
 }
 
@@ -48,20 +48,20 @@ function wpcf7_admin_menu_extras() {
     'cf7-email-filter',
     'cf7_email_filter_config_page' 
   );
-	add_submenu_page( 
-    'wpcf7',
-    __('CF7 Email Filter Configuration', 'textdomain'),
-    __('Email Filter', 'textdomain'), 
-    'manage_options',
-    'cf7-email-filter',
-    'cf7_email_filter_config_page'
-	);
+	// add_submenu_page( 
+  //   'wpcf7',
+  //   __('CF7 Email Filter Configuration', 'textdomain'),
+  //   __('CF7 Email Filter', 'textdomain'), 
+  //   'manage_options',
+  //   'cf7-email-filter',
+  //   'cf7_email_filter_config_page'
+	// );
 }
 
 function cf7_email_filter_get_options() {
   $options = get_option( 'cf7_email_filter_options', array() );
   $default_list_of_emails = plugin_dir_path( __FILE__ ) . 'default_emails.txt';
-  $new_options['list_of_emails'] = file_get_contents( $default_list_of_emails );
+  $new_options['list_of_emails'] =  wp_remote_get( $default_list_of_emails );
   $new_options['warning_message'] = 'Please input a valid business email address.';
   $new_options['cf7_forms'] = '';
   $merged_options = wp_parse_args( $options, $new_options );
@@ -87,19 +87,21 @@ function cf7_email_filter_config_page() {
     </div>
     <?php } elseif ( isset( $_GET['message'] ) && $_GET['message'] == '2' ) { ?>
     <div id='message' class='updated fade'>
-      <p><strong>List of blocked emails reverted</strong></p>
+      <p><strong>List of blocked URLs reverted</strong></p>
     </div>
     <?php } ?>
     <form name="cf7_email_filter_options_form" method="post" action="admin-post.php">
       <input type="hidden" name="action" value="save_cf7_email_filter_options" />
       <?php wp_nonce_field( 'cf7_email_filter' ); ?>
-      List of Blocked Emails<br />
+      <p style="margin-bottom: 0;"><strong>List of Blocked URLs</strong><br>
+      Email addresses containing any of the listed URLs will be considered invalid.</p>
       <textarea name="list_of_emails" id="fancy-textarea" rows="10" cols="40" style="font-family:Consolas,Monaco,monospace"><?php echo $list; ?></textarea><br />
 
-      <label for="warning-message">Warning Message</label><br />
-      <input type="text" name="warning_message" value="<?php echo $options['warning_message']; ?>" size="50" /><br /><br />
+      <p><label for="warning-message"><strong>Warning Message</strong><br>This will be displayed at any attempt to use an email using a blocked URL.</label><br />
+      <input type="text" name="warning_message" value="<?php echo $options['warning_message']; ?>" size="50" /></p>
 
-      <label for="available-forms">Available Forms</label><br />
+      <p><label for="available-forms"><strong>Available Forms</strong><br>Select the forms you want the email filter actively validating.</label></p>
+      <ul>
         <?php
           $selected_forms = explode(',', $options['cf7_forms']);
           $posts = get_posts(array(
@@ -108,10 +110,13 @@ function cf7_email_filter_config_page() {
           ));
           foreach ( $posts as $p ) {
             $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
+            echo '<li>';
             echo '<input type="checkbox" name="cf7_forms[]" value="'.$p->ID.'" ' . $checked . '>';
-            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label><br>';
+            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label>';
+            echo '</li>';
           } 
         ?>
+      </ul>
 
       <input type="submit" value="Submit" class="button-primary" />
       <input type="submit" value="Reset" name="resetstyle" class="button-primary" />
@@ -198,4 +203,25 @@ function free_email_validation_filter( $result, $tag ) {
 
   return $result;
   
+}
+/**
+ * Add Settings link to the plugins page
+ */
+add_filter( 'plugin_action_links', 'cf7_email_filter_settings_link' );
+function cf7_email_filter_settings_link( $links ) {
+	// Build and escape the URL.
+	$url = esc_url( add_query_arg(
+		array(
+      'page' => 'cf7-email-filter'
+    ),
+    admin_url( 'options-general.php' )
+	) );
+	// Create the link.
+	$settings_link = "<a href='$url'>" . __( 'Settings' ) . '</a>';
+	// Adds the link to the end of the array.
+	array_push(
+		$links,
+		$settings_link
+	);
+	return $links;
 }
