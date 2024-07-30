@@ -87,19 +87,21 @@ function cf7_email_filter_config_page() {
     </div>
     <?php } elseif ( isset( $_GET['message'] ) && $_GET['message'] == '2' ) { ?>
     <div id='message' class='updated fade'>
-      <p><strong>List of blocked emails reverted</strong></p>
+      <p><strong>List of blocked URLs reverted</strong></p>
     </div>
     <?php } ?>
     <form name="cf7_email_filter_options_form" method="post" action="admin-post.php">
       <input type="hidden" name="action" value="save_cf7_email_filter_options" />
       <?php wp_nonce_field( 'cf7_email_filter' ); ?>
-      <p style="margin-bottom: 0;"><strong>List of Blocked Emails</strong></p>
+      <p style="margin-bottom: 0;"><strong>List of Blocked URLs</strong><br>
+      Email addresses containing any of the listed URLs will be considered invalid.</p>
       <textarea name="list_of_emails" id="fancy-textarea" rows="10" cols="40" style="font-family:Consolas,Monaco,monospace"><?php echo $list; ?></textarea><br />
 
-      <p><label for="warning-message"><strong>Warning Message</strong></label><br />
+      <p><label for="warning-message"><strong>Warning Message</strong><br>This will be displayed at any attempt to use an email using a blocked URL.</label><br />
       <input type="text" name="warning_message" value="<?php echo $options['warning_message']; ?>" size="50" /></p>
 
-      <p><label for="available-forms"><strong>Available Forms</strong></label><br />
+      <p><label for="available-forms"><strong>Available Forms</strong><br>Select the forms you want the email filter actively validating.</label></p>
+      <ul>
         <?php
           $selected_forms = explode(',', $options['cf7_forms']);
           $posts = get_posts(array(
@@ -108,11 +110,13 @@ function cf7_email_filter_config_page() {
           ));
           foreach ( $posts as $p ) {
             $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
+            echo '<li>';
             echo '<input type="checkbox" name="cf7_forms[]" value="'.$p->ID.'" ' . $checked . '>';
-            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label><br>';
+            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label>';
+            echo '</li>';
           } 
         ?>
-        </p>
+      </ul>
 
       <input type="submit" value="Submit" class="button-primary" />
       <input type="submit" value="Reset" name="resetstyle" class="button-primary" />
