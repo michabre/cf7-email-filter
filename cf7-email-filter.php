@@ -48,14 +48,7 @@ function wpcf7_admin_menu_extras() {
     'cf7-email-filter',
     'cf7_email_filter_config_page' 
   );
-	// add_submenu_page( 
-  //   'wpcf7',
-  //   __('CF7 Email Filter Configuration', 'textdomain'),
-  //   __('CF7 Email Filter', 'textdomain'), 
-  //   'manage_options',
-  //   'cf7-email-filter',
-  //   'cf7_email_filter_config_page'
-	// );
+
 }
 
 function cf7_email_filter_get_options() {
@@ -111,7 +104,7 @@ function cf7_email_filter_config_page() {
           foreach ( $posts as $p ) {
             $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
             echo '<li>';
-            echo '<input type="checkbox" name="cf7_forms[]" value="'.$p->ID.'" ' . $checked . '>';
+            echo '<input type="checkbox" name="cf7_forms[]" value="'. $p->ID .'" ' . $checked . '>';
             echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label>';
             echo '</li>';
           } 
@@ -143,8 +136,9 @@ function process_cf7_email_filter_options() {
 
   if ( isset( $_POST['resetstyle'] ) ) {
     $default_list_of_emails = plugin_dir_path( __FILE__ ) . 'default_emails.txt';
+    //$options['list_of_emails'] = file_get_contents( $default_list_of_emails );
     $options['list_of_emails'] = file_get_contents( $default_list_of_emails );
-    $options['warning_message'] = 'Please input a valid business email address.';
+    $options['warning_message'] = esc_html__('Please input a valid business email address.');
     $options['cf7_forms'] = '';
     $message = 2;
   } elseif ( !empty( $_POST ) ) {
