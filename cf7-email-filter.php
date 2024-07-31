@@ -33,13 +33,11 @@ function cf7_active_notice(){
   }
 }
 
-// add default list of blocked domains to options
-// comes in a CSV file packaged with the plugin
-
 //
 if ( $cf7_active ) {
   add_action( 'admin_menu', 'wpcf7_admin_menu_extras' );
 }
+
 function wpcf7_admin_menu_extras() {
   add_options_page(
     __('CF7 Email Filter Configuration', 'textdomain'),
@@ -48,14 +46,13 @@ function wpcf7_admin_menu_extras() {
     'cf7-email-filter',
     'cf7_email_filter_config_page' 
   );
-
 }
 
 function cf7_email_filter_get_options() {
   $options = get_option( 'cf7_email_filter_options', array() );
   $default_list_of_emails = plugin_dir_path( __FILE__ ) . 'default_emails.txt';
   $new_options['list_of_emails'] =  wp_remote_get( $default_list_of_emails );
-  $new_options['warning_message'] = 'Please input a valid business email address.';
+  $new_options['warning_message'] = __('Please input a valid business email address.');
   $new_options['cf7_forms'] = '';
   $merged_options = wp_parse_args( $options, $new_options );
   $compare_options = array_diff_key( $new_options, $options );
@@ -105,7 +102,7 @@ function cf7_email_filter_config_page() {
             $checked = in_array($p->ID, $selected_forms) ? 'checked' : '';
             echo '<li>';
             echo '<input type="checkbox" name="cf7_forms[]" value="'. $p->ID .'" ' . $checked . '>';
-            echo '<label for="' . $p->ID .'" >' . $p->post_title . '</label>';
+            echo '<label for="' . $p->ID . '" >' . $p->post_title . '</label>';
             echo '</li>';
           } 
         ?>
@@ -136,9 +133,8 @@ function process_cf7_email_filter_options() {
 
   if ( isset( $_POST['resetstyle'] ) ) {
     $default_list_of_emails = plugin_dir_path( __FILE__ ) . 'default_emails.txt';
-    //$options['list_of_emails'] = file_get_contents( $default_list_of_emails );
-    $options['list_of_emails'] = file_get_contents( $default_list_of_emails );
-    $options['warning_message'] = esc_html__('Please input a valid business email address.');
+    $new_options['list_of_emails'] =  wp_remote_get( $default_list_of_emails );
+    $options['warning_message'] = __('Please input a valid business email address.');
     $options['cf7_forms'] = '';
     $message = 2;
   } elseif ( !empty( $_POST ) ) {
