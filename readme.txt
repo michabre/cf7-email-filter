@@ -1,6 +1,5 @@
 === CF7 Email Filter ===
 Contributors: michabre
-Donate link: 
 Tags: forms, contact form 7
 Requires at least: 5.0
 Tested up to: 6.6.1
@@ -19,7 +18,7 @@ Email validation extension for Contact Form 7 that allows you to exclude email s
 1. Download the plugin.
 2. Upload the cf7-email-filter folder to your site's wp-content/plugins directory.
 3. Activate the plugin in the WordPress Admin Panel.
-4. In the Admin Panel, go to Contact->Email Filter or Settings->CF7 Email Filter.
+4. In the Admin Panel, go to Settings->CF7 Email Filter.
 5. Verify/update the List of Blocked Emails, add a custom Warning Message, and choose which Contact Form 7 Forms you want the validation activated.
 
 == Changelog ==
