@@ -167,6 +167,8 @@ function process_cf7_email_filter_options() {
 
 // check if email is from a blocked domain
 if ( $cf7_active ) {
+    // Add nonce to CF7 forms
+  add_filter( 'wpcf7_verify_nonce', '__return_true' );
   add_filter( 'wpcf7_validate_email*', 'free_email_validation_filter', 5, 2 );
 }
 function free_email_validation_filter( $result, $tag ) {  
@@ -174,6 +176,11 @@ function free_email_validation_filter( $result, $tag ) {
   $warning_message = $options['warning_message'];
   $clean = new CleanStoredTextAreaValues($options['list_of_emails']);
   $freeDomainEmails = $clean->getValues();
+
+  if ( !isset( $_REQUEST['_wpnonce'] ) || wp_verify_nonce( $_REQUEST['_wpnonce'], 'cf7_email_filter' ) ) {
+    return $result;
+  } 
+  
   $form_id = $_POST['_wpcf7'];
   $forms_to_check = explode(',', $options['cf7_forms']);
 
@@ -186,7 +193,7 @@ function free_email_validation_filter( $result, $tag ) {
     foreach ($freeDomainEmails as $free) {
       $domain = substr($your_email, strpos($your_email, '@') + 1);
       if ( $domain == $free ) {
-        $result->invalidate( $tag, $warning_message);
+        $result->invalidate( $tag, $warning_message );
       }
     }
   }
@@ -215,3 +222,4 @@ function cf7_email_filter_settings_link( $links ) {
 	);
 	return $links;
 }
+
